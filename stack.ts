@@ -26,15 +26,16 @@ export default class Stack<T> {
   }
 
   pop(): T | undefined {
-    this.length = Math.max(0, this.length - 1);
-    if (this.length === 0) {
-      const head = this.head;
-      this.head = undefined;
-      return head?.value;
+    if (!this.head) {
+      return undefined;
     }
 
-    const head = this.head as Node<T>;
+    this.length--;
+    const head = this.head;
     this.head = head.prev;
+
+    head.prev = undefined;
+
     return head.value;
   }
 
