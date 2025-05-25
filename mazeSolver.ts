@@ -4,10 +4,10 @@ interface Point {
 }
 
 const dir = [
-  [-1, 0],
-  [1, 0],
   [0, -1],
+  [1, 0],
   [0, 1],
+  [-1, 0],
 ];
 
 function walk(
