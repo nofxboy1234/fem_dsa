@@ -5,7 +5,9 @@ function qs(arr: number[], lo: number, hi: number): void {
 
   const pivotIdx = partition(arr, lo, hi);
 
+  console.log(`partition at ${pivotIdx}, sort left ${lo} - ${pivotIdx - 1}`);
   qs(arr, lo, pivotIdx - 1);
+  console.log(`partition at ${pivotIdx}, sort right ${pivotIdx + 1} - ${hi}`);
   qs(arr, pivotIdx + 1, hi);
 }
 
