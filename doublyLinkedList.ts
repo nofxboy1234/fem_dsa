@@ -156,3 +156,19 @@ export default class DoublyLinkedList<T> {
     return result;
   }
 }
+
+const list: DoublyLinkedList<number> = new DoublyLinkedList<number>();
+console.log(list.length);
+list.append(10);
+list.append(20);
+list.append(30);
+
+console.log(list.length);
+console.log(list.get(99));
+list.append(40);
+list.prepend(90);
+list.insertAt(84, 3);
+list.removeAt(1);
+console.log(list.remove(99));
+console.log(list.remove(30));
+console.log(list.toArray());
