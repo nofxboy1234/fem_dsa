@@ -31,7 +31,7 @@ export default class DoublyLinkedList<T> {
 
   insertAt(item: T, idx: number): void {
     if (idx > this.length) {
-      throw new Error("oh no");
+      throw new Error("Index out of bounds");
     }
 
     if (idx === this.length) {
@@ -109,11 +109,11 @@ export default class DoublyLinkedList<T> {
     }
 
     if (node.prev) {
-      node.prev = node.next;
+      node.prev.next = node.next;
     }
 
     if (node.next) {
-      node.next = node.prev;
+      node.next.prev = node.prev;
     }
 
     if (node === this.head) {
