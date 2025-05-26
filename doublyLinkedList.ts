@@ -87,7 +87,8 @@ export default class DoublyLinkedList<T> {
   }
 
   get(idx: number): T | undefined {
-    return this.getAt(idx)?.value;
+    const result = this.getAt(idx)?.value;
+    return result;
   }
 
   removeAt(idx: number): T | undefined {
@@ -164,7 +165,8 @@ list.append(20);
 list.append(30);
 
 console.log(list.length);
-console.log(list.get(99));
+console.log(list.get(2));
+console.log(list.get(3));
 list.append(40);
 list.prepend(90);
 list.insertAt(84, 3);
