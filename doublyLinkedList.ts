@@ -134,4 +134,25 @@ export default class DoublyLinkedList<T> {
     }
     return curr;
   }
+
+  // helper method for testing
+  toArray(): T[] {
+    const result: T[] = [];
+    let curr = this.head;
+    while (curr) {
+      result.push(curr.value);
+      curr = curr.next;
+    }
+    return result;
+  }
+
+  toArrayReverse(): T[] {
+    const result: T[] = [];
+    let curr = this.tail;
+    while (curr) {
+      result.push(curr.value);
+      curr = curr.prev;
+    }
+    return result;
+  }
 }
