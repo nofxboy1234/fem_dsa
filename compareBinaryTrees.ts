@@ -1,4 +1,5 @@
 import type { BinaryNode } from "./binaryNode";
+import { tree, tree2 } from "./tree";
 
 export default function compare(
   a: BinaryNode<number> | null,
@@ -21,3 +22,8 @@ export default function compare(
 
   return compare(a.left, b.left) && compare(a.right, b.right);
 }
+
+let result = compare(tree, tree);
+console.log(result);
+result = compare(tree, tree2);
+console.log(result);
