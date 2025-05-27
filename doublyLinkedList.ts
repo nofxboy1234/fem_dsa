@@ -174,3 +174,5 @@ list.removeAt(1);
 console.log(list.remove(99));
 console.log(list.remove(30));
 console.log(list.toArray());
+
+console.log(list.toArrayReverse());
