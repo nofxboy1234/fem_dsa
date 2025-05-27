@@ -6,7 +6,6 @@ export default function foo(n: number): number {
   }
 
   // Recurse!
-  // pre: n +
   console.log(`pre: ${n}+`);
   const out = n + foo(n - 1);
   console.log(`post: ${n}`);
