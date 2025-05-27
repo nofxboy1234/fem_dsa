@@ -1,7 +1,10 @@
 import { tree } from "./tree";
 import type { BinaryNode } from "./binaryNode";
 
-function find(node: BinaryNode<number> | null, value: number): boolean {
+export default function find(
+  node: BinaryNode<number> | null,
+  value: number
+): boolean {
   if (!node) {
     return false;
   }
@@ -17,14 +20,9 @@ function find(node: BinaryNode<number> | null, value: number): boolean {
   return find(node.left, value);
 }
 
-export default function depthFirstFind(
-  head: BinaryNode<number>,
-  value: number
-): boolean {
-  return find(head, value);
-}
-
-let result = depthFirstFind(tree, 29);
+let result = find(tree, 29);
 console.log(result);
-result = depthFirstFind(tree, 99);
+result = find(tree, 99);
+console.log(result);
+result = find(tree, 7);
 console.log(result);
