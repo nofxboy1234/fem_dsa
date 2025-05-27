@@ -1,3 +1,5 @@
+import type { BinaryNode } from "./binaryNode";
+
 export const tree: BinaryNode<number> = {
   value: 20,
   right: {
