@@ -1,8 +1,5 @@
-type BinaryNode<T> = {
-  value: T;
-  left: BinaryNode<T> | null;
-  right: BinaryNode<T> | null;
-};
+import { tree } from "./tree";
+import type { BinaryNode } from "./binaryNode";
 
 function walk(curr: BinaryNode<number> | null, path: number[]): number[] {
   if (!curr) {
@@ -24,3 +21,6 @@ function walk(curr: BinaryNode<number> | null, path: number[]): number[] {
 export default function preOrderSearch(head: BinaryNode<number>): number[] {
   return walk(head, []);
 }
+
+const result = preOrderSearch(tree);
+console.log(result);
