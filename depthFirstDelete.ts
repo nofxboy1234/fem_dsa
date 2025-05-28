@@ -71,3 +71,92 @@ function inOrderTraversal(node: BinaryNode<number> | null): number[] {
     ...inOrderTraversal(node.right),
   ];
 }
+
+// Build a test tree
+function buildTestTree(): BinaryNode<number> | null {
+  let root: BinaryNode<number> | null = null;
+  const values = [50, 30, 70, 20, 40, 60, 80, 10, 25, 35, 45];
+
+  function insert(
+    node: BinaryNode<number> | null,
+    value: number
+  ): BinaryNode<number> | null {
+    if (!node) return { value, left: null, right: null } as BinaryNode<number>;
+    if (value < node.value) node.left = insert(node.left, value);
+    else if (value > node.value) node.right = insert(node.right, value);
+    return node;
+  }
+
+  for (const val of values) {
+    root = insert(root, val);
+  }
+  return root;
+}
+
+// Manual Tests
+console.log("=== BST Delete Function Tests ===");
+
+let testTree = buildTestTree();
+console.log("Original tree (in-order):", inOrderTraversal(testTree));
+console.log("Tree structure:", JSON.stringify(testTree, null, 2));
+
+// Test 1: Delete leaf node (no children)
+console.log("\n--- Test 1: Delete leaf node (10) ---");
+testTree = deleteNode(testTree, 10);
+console.log("After deleting 10:", inOrderTraversal(testTree));
+
+// Test 2: Delete node with only right child (25)
+console.log("\n--- Test 2: Delete node with one child (25) ---");
+testTree = deleteNode(testTree, 25);
+console.log("After deleting 25:", inOrderTraversal(testTree));
+
+// Test 3: Delete node with only left child
+// First, let's create this scenario by deleting 45
+console.log("\n--- Test 3: Delete node with only left child ---");
+testTree = deleteNode(testTree, 45);
+console.log("After deleting 45:", inOrderTraversal(testTree));
+
+// Test 4: Delete node with two children (30)
+console.log("\n--- Test 4: Delete node with two children (30) ---");
+console.log("Before deleting 30:", inOrderTraversal(testTree));
+testTree = deleteNode(testTree, 30);
+console.log("After deleting 30:", inOrderTraversal(testTree));
+
+// Test 5: Delete root node
+console.log("\n--- Test 5: Delete root node (50) ---");
+console.log("Before deleting root:", inOrderTraversal(testTree));
+testTree = deleteNode(testTree, 50);
+console.log("After deleting root:", inOrderTraversal(testTree));
+
+// Test 6: Delete non-existent value
+console.log("\n--- Test 6: Delete non-existent value (999) ---");
+const beforeNonExistent = inOrderTraversal(testTree);
+testTree = deleteNode(testTree, 999);
+const afterNonExistent = inOrderTraversal(testTree);
+console.log(
+  "Tree unchanged:",
+  JSON.stringify(beforeNonExistent) === JSON.stringify(afterNonExistent)
+);
+
+// Test 7: Delete all nodes one by one
+console.log("\n--- Test 7: Delete remaining nodes ---");
+const remainingValues = inOrderTraversal(testTree);
+console.log("Remaining values:", remainingValues);
+
+for (const val of remainingValues) {
+  testTree = deleteNode(testTree, val);
+  console.log(`After deleting ${val}:`, inOrderTraversal(testTree));
+}
+
+console.log("Final tree (should be empty):", testTree);
+
+// Test 8: Edge case - single node tree
+console.log("\n--- Test 8: Single node tree ---");
+let singleNode: BinaryNode<number> | null = {
+  value: 42,
+  left: null,
+  right: null,
+};
+console.log("Single node before deletion:", inOrderTraversal(singleNode));
+singleNode = deleteNode(singleNode, 42);
+console.log("After deleting single node:", singleNode);
