@@ -18,7 +18,7 @@ export default class MinHeap {
       return undefined;
     }
 
-    const out = this.data[0];
+    const out = this.data[0]!; // Non-null assertion - we know index 0 exists
     this.length--;
 
     if (this.length === 0) {
@@ -26,7 +26,9 @@ export default class MinHeap {
       return out;
     }
 
-    this.data[0] = this.data[this.length];
+    // Move last element to root and remove it from the end
+    this.data[0] = this.data[this.length]!; // Non-null assertion
+    this.data.length = this.length; // Actually shrink the array
     this.heapifyDown(0);
     return out;
   }
@@ -36,18 +38,20 @@ export default class MinHeap {
     const lIdx = this.leftChild(idx);
     const rIdx = this.rightChild(idx);
 
-    if (lIdx < this.length && this.data[lIdx] < this.data[minIdx]) {
+    // Check left child
+    if (lIdx < this.length && this.data[lIdx]! < this.data[minIdx]!) {
       minIdx = lIdx;
     }
 
-    if (rIdx < this.length && this.data[rIdx] < this.data[minIdx]) {
+    // Check right child
+    if (rIdx < this.length && this.data[rIdx]! < this.data[minIdx]!) {
       minIdx = rIdx;
     }
 
     if (minIdx !== idx) {
-      // Swap
-      const temp = this.data[idx];
-      this.data[idx] = this.data[minIdx];
+      // Swap elements
+      const temp = this.data[idx]!;
+      this.data[idx] = this.data[minIdx]!;
       this.data[minIdx] = temp;
       this.heapifyDown(minIdx);
     }
@@ -59,10 +63,10 @@ export default class MinHeap {
     }
 
     const p = this.parent(idx);
-    if (this.data[p] > this.data[idx]) {
-      // Swap
-      const temp = this.data[idx];
-      this.data[idx] = this.data[p];
+    if (this.data[p]! > this.data[idx]!) {
+      // Swap elements
+      const temp = this.data[idx]!;
+      this.data[idx] = this.data[p]!;
       this.data[p] = temp;
       this.heapifyUp(p);
     }
@@ -79,10 +83,22 @@ export default class MinHeap {
   private rightChild(idx: number): number {
     return idx * 2 + 2;
   }
+
+  // Helper method to peek at minimum without removing it
+  peek(): number | undefined {
+    return this.length > 0 ? this.data[0] : undefined;
+  }
+
+  // Helper method to check if heap is empty
+  isEmpty(): boolean {
+    return this.length === 0;
+  }
 }
 
+// Test the implementation
 const heap = new MinHeap();
-console.log(heap.length);
+console.log("Initial length:", heap.length);
+
 heap.insert(5);
 heap.insert(3);
 heap.insert(69);
@@ -92,14 +108,20 @@ heap.insert(1);
 heap.insert(8);
 heap.insert(7);
 
-console.log(heap.length);
-console.log(heap.delete());
-console.log(heap.delete());
-console.log(heap.delete());
-console.log(heap.delete());
-console.log(heap.length);
-console.log(heap.delete());
-console.log(heap.delete());
-console.log(heap.delete());
-console.log(heap.delete());
-console.log(heap.length);
+console.log("Length after insertions:", heap.length);
+console.log("Peek at minimum:", heap.peek());
+
+console.log("Deleting elements:");
+console.log(heap.delete()); // Should be 1 (minimum)
+console.log(heap.delete()); // Should be 3
+console.log(heap.delete()); // Should be 4
+console.log(heap.delete()); // Should be 5
+console.log("Length after 4 deletions:", heap.length);
+
+console.log("Continuing to delete:");
+console.log(heap.delete()); // Should be 7
+console.log(heap.delete()); // Should be 8
+console.log(heap.delete()); // Should be 69
+console.log(heap.delete()); // Should be 420
+console.log("Final length:", heap.length);
+console.log("Delete from empty heap:", heap.delete()); // Should be undefined
