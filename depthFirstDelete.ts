@@ -102,6 +102,7 @@ console.log("=== BST Delete Function Tests ===");
 //   right: null,
 // };
 
+// 41,16,10,4,27,35,65,46,44,45,53,52,84,80,66,70
 let testTree: BinaryNode<number> | null = {
   value: 41,
   left: {
@@ -149,13 +150,17 @@ let testTree: BinaryNode<number> | null = {
       },
     },
     right: {
-      value: 68,
+      value: 84,
       left: {
-        value: 67,
+        value: 80,
         left: {
           value: 66,
           left: null,
-          right: null,
+          right: {
+            value: 70,
+            left: null,
+            right: null,
+          },
         },
         right: null,
       },
@@ -164,23 +169,23 @@ let testTree: BinaryNode<number> | null = {
   },
 };
 
-console.log("Original tree (in-order):", inOrderTraversal(testTree));
-console.log("Tree structure:", JSON.stringify(testTree, null, 2));
+// console.log("Original tree (in-order):", inOrderTraversal(testTree));
+// console.log("Tree structure:", JSON.stringify(testTree, null, 2));
 
-console.log("\n--- Test 1: Delete leaf node (4) ---");
-testTree = deleteNode(testTree, 4);
-console.log("After deleting 4:", inOrderTraversal(testTree));
-console.log("Tree structure:", JSON.stringify(testTree, null, 2));
+// console.log("\n--- Test 1: Delete leaf node (4) ---");
+// testTree = deleteNode(testTree, 4);
+// console.log("After deleting 4:", inOrderTraversal(testTree));
+// console.log("Tree structure:", JSON.stringify(testTree, null, 2));
 
-console.log("\n--- Test 2: Delete node with one right child (27) ---");
-testTree = deleteNode(testTree, 27);
-console.log("After deleting 27:", inOrderTraversal(testTree));
-console.log("Tree structure:", JSON.stringify(testTree, null, 2));
+// console.log("\n--- Test 2: Delete node with one right child (27) ---");
+// testTree = deleteNode(testTree, 27);
+// console.log("After deleting 27:", inOrderTraversal(testTree));
+// console.log("Tree structure:", JSON.stringify(testTree, null, 2));
 
-console.log("\n--- Test 3: Delete node with one left child ---");
-testTree = deleteNode(testTree, 53);
-console.log("After deleting 53:", inOrderTraversal(testTree));
-console.log("Tree structure:", JSON.stringify(testTree, null, 2));
+// console.log("\n--- Test 3: Delete node with one left child ---");
+// testTree = deleteNode(testTree, 53);
+// console.log("After deleting 53:", inOrderTraversal(testTree));
+// console.log("Tree structure:", JSON.stringify(testTree, null, 2));
 
 console.log("\n--- Test 4: Delete node with two children (16) ---");
 console.log("Before deleting 16:", inOrderTraversal(testTree));
@@ -188,11 +193,11 @@ testTree = deleteNode(testTree, 16);
 console.log("After deleting 16:", inOrderTraversal(testTree));
 console.log("Tree structure:", JSON.stringify(testTree, null, 2));
 
-console.log("\n--- Test 4: Delete node with two children (46) ---");
-console.log("Before deleting 46:", inOrderTraversal(testTree));
-testTree = deleteNode(testTree, 46);
-console.log("After deleting 46:", inOrderTraversal(testTree));
-console.log("Tree structure:", JSON.stringify(testTree, null, 2));
+// console.log("\n--- Test 4: Delete node with two children (46) ---");
+// console.log("Before deleting 46:", inOrderTraversal(testTree));
+// testTree = deleteNode(testTree, 46);
+// console.log("After deleting 46:", inOrderTraversal(testTree));
+// console.log("Tree structure:", JSON.stringify(testTree, null, 2));
 
 console.log("\n--- Test 4: Delete node with two children (65) ---");
 console.log("Before deleting 65:", inOrderTraversal(testTree));
@@ -200,41 +205,41 @@ testTree = deleteNode(testTree, 65);
 console.log("After deleting 65:", inOrderTraversal(testTree));
 console.log("Tree structure:", JSON.stringify(testTree, null, 2));
 
-console.log("\n--- Test 5: Delete root node (41) ---");
-console.log("Before deleting root:", inOrderTraversal(testTree));
-testTree = deleteNode(testTree, 41);
-console.log("After deleting root:", inOrderTraversal(testTree));
-console.log("Tree structure:", JSON.stringify(testTree, null, 2));
+// console.log("\n--- Test 5: Delete root node (41) ---");
+// console.log("Before deleting root:", inOrderTraversal(testTree));
+// testTree = deleteNode(testTree, 41);
+// console.log("After deleting root:", inOrderTraversal(testTree));
+// console.log("Tree structure:", JSON.stringify(testTree, null, 2));
 
-console.log("\n--- Test 6: Delete non-existent value (999) ---");
-const beforeNonExistent = inOrderTraversal(testTree);
-testTree = deleteNode(testTree, 999);
-const afterNonExistent = inOrderTraversal(testTree);
-console.log(
-  "Tree unchanged:",
-  JSON.stringify(beforeNonExistent) === JSON.stringify(afterNonExistent)
-);
-console.log("Tree structure:", JSON.stringify(testTree, null, 2));
+// console.log("\n--- Test 6: Delete non-existent value (999) ---");
+// const beforeNonExistent = inOrderTraversal(testTree);
+// testTree = deleteNode(testTree, 999);
+// const afterNonExistent = inOrderTraversal(testTree);
+// console.log(
+//   "Tree unchanged:",
+//   JSON.stringify(beforeNonExistent) === JSON.stringify(afterNonExistent)
+// );
+// console.log("Tree structure:", JSON.stringify(testTree, null, 2));
 
-console.log("\n--- Test 7: Delete remaining nodes ---");
-const remainingValues = inOrderTraversal(testTree);
-console.log("Remaining values:", remainingValues);
+// console.log("\n--- Test 7: Delete remaining nodes ---");
+// const remainingValues = inOrderTraversal(testTree);
+// console.log("Remaining values:", remainingValues);
 
-for (const val of remainingValues) {
-  testTree = deleteNode(testTree, val);
-  console.log(`After deleting ${val}:`, inOrderTraversal(testTree));
-}
+// for (const val of remainingValues) {
+//   testTree = deleteNode(testTree, val);
+//   console.log(`After deleting ${val}:`, inOrderTraversal(testTree));
+// }
 
-console.log("Final tree (should be empty):", testTree);
-console.log("Tree structure:", JSON.stringify(testTree, null, 2));
+// console.log("Final tree (should be empty):", testTree);
+// console.log("Tree structure:", JSON.stringify(testTree, null, 2));
 
-console.log("\n--- Test 8: Single node tree ---");
-let singleNode: BinaryNode<number> | null = {
-  value: 42,
-  left: null,
-  right: null,
-};
-console.log("Single node before deletion:", inOrderTraversal(singleNode));
-singleNode = deleteNode(singleNode, 42);
-console.log("After deleting single node:", singleNode);
-console.log("Tree structure:", JSON.stringify(testTree, null, 2));
+// console.log("\n--- Test 8: Single node tree ---");
+// let singleNode: BinaryNode<number> | null = {
+//   value: 42,
+//   left: null,
+//   right: null,
+// };
+// console.log("Single node before deletion:", inOrderTraversal(singleNode));
+// singleNode = deleteNode(singleNode, 42);
+// console.log("After deleting single node:", singleNode);
+// console.log("Tree structure:", JSON.stringify(testTree, null, 2));
