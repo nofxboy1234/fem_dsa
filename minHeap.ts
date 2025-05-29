@@ -13,9 +13,9 @@ export default class MinHeap {
     this.length++;
   }
 
-  delete(): number {
+  delete(): number | undefined {
     if (this.length === 0) {
-      return -1;
+      return undefined;
     }
 
     const out = this.data[0];
@@ -32,29 +32,24 @@ export default class MinHeap {
   }
 
   private heapifyDown(idx: number): void {
+    let minIdx = idx;
     const lIdx = this.leftChild(idx);
     const rIdx = this.rightChild(idx);
 
-    if (idx >= this.length || lIdx >= this.length) {
-      return;
+    if (lIdx < this.length && this.data[lIdx] < this.data[minIdx]) {
+      minIdx = lIdx;
     }
 
-    const lV = this.data[lIdx];
-    const rV = this.data[rIdx];
-    const v = this.data[idx];
+    if (rIdx < this.length && this.data[rIdx] < this.data[minIdx]) {
+      minIdx = rIdx;
+    }
 
-    if (lV > rV && v > rV) {
-      this.data[idx] = rV;
-      this.data[rIdx] = v;
-      this.heapifyDown(rIdx);
-    } else if (rV > lV && v > lV) {
-      this.data[idx] = lV;
-      this.data[lIdx] = v;
-      this.heapifyDown(lIdx);
-    } else if (lV === rv && v > rV) {
-      this.data[idx] = rV;
-      this.data[rIdx] = v;
-      this.heapifyDown(rIdx);
+    if (minIdx !== idx) {
+      // Swap
+      const temp = this.data[idx];
+      this.data[idx] = this.data[minIdx];
+      this.data[minIdx] = temp;
+      this.heapifyDown(minIdx);
     }
   }
 
@@ -64,12 +59,11 @@ export default class MinHeap {
     }
 
     const p = this.parent(idx);
-    const parentV = this.data[p];
-    const v = this.data[idx];
-
-    if (parentV > v) {
-      this.data[idx] = parentV;
-      this.data[p] = v;
+    if (this.data[p] > this.data[idx]) {
+      // Swap
+      const temp = this.data[idx];
+      this.data[idx] = this.data[p];
+      this.data[p] = temp;
       this.heapifyUp(p);
     }
   }
