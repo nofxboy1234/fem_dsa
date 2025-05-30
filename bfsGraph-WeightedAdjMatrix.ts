@@ -18,7 +18,7 @@ export default function bfs(
       break;
     }
 
-    const adjs = graph[curr];
+    const adjs = graph[curr]!;
     for (let i = 0; i < adjs.length; ++i) {
       if (adjs[i] === 0) {
         continue;
