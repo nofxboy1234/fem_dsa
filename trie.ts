@@ -113,6 +113,7 @@ console.log(trie.search("care")); // true
 console.log(trie.search("careful")); // true
 
 // Delete some words
+console.log("\nDeleting 'cat':", trie.delete("cat")); // true
 console.log("\nDeleting 'car':", trie.delete("car")); // true
 console.log("Deleting 'xyz':", trie.delete("xyz")); // false (doesn't exist)
 
