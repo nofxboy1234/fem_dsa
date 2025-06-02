@@ -1,6 +1,6 @@
 type GraphEdge = { to: number; weight: number };
 type WeightedAdjacencyList = GraphEdge[][];
-import { list2 } from "./graph";
+import { list1 } from "./graph";
 
 function hasUnvisited(seen: boolean[], dists: number[]): boolean {
   return seen.some((s, i) => !s && dists[i]! < Infinity);
@@ -64,3 +64,6 @@ export default function dijkstraList(
   out.push(source);
   return out.reverse();
 }
+
+let result = dijkstraList(0, 6, list1);
+console.log(result);
