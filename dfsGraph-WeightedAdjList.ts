@@ -59,3 +59,6 @@ console.log(result);
 
 result = dfs(list2, 6, 0);
 console.log(result);
+
+result = dfs(list2, 0, 2);
+console.log(result);
