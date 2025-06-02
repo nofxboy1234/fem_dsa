@@ -1,6 +1,6 @@
 type GraphEdge = { to: number; weight: number };
 type WeightedAdjacencyList = GraphEdge[][];
-import { list1 } from "./graph";
+import { list2 } from "./graph";
 
 function walk(
   graph: WeightedAdjacencyList,
@@ -9,7 +9,32 @@ function walk(
   seen: boolean[],
   path: number[]
 ): boolean {
-  //
+  if (seen[curr]) {
+    return false;
+  }
+
+  seen[curr] = true;
+
+  // recurse
+  // pre
+  path.push(curr);
+  if (curr === needle) {
+    return true;
+  }
+
+  // recurse
+  const list = graph[curr]!;
+  for (let i = 0; i < list.length; ++i) {
+    const edge = list[i]!;
+
+    if (walk(graph, edge.to, needle, seen, path)) {
+      return true;
+    }
+  }
+  // post
+  path.pop();
+
+  return false;
 }
 
 export default function dfs(
@@ -17,5 +42,20 @@ export default function dfs(
   source: number,
   needle: number
 ): number[] | null {
-  //
+  const seen: boolean[] = new Array(graph.length).fill(false);
+  const path: number[] = [];
+
+  walk(graph, source, needle, seen, path);
+
+  if (path.length === 0) {
+    return null;
+  }
+
+  return path;
 }
+
+let result = dfs(list2, 0, 6);
+console.log(result);
+
+result = dfs(list2, 6, 0);
+console.log(result);
