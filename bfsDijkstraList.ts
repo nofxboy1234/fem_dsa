@@ -38,6 +38,8 @@ export default function dijkstraList(
     const curr = getLowestUnvisited(seen, dists);
     seen[curr] = true;
 
+    if (curr === sink) break;
+
     const adjs = arr[curr]!;
     for (let i = 0; i < adjs.length; ++i) {
       const edge = adjs[i]!;
@@ -51,6 +53,10 @@ export default function dijkstraList(
         prev[edge.to] = curr;
       }
     }
+  }
+
+  if (dists[sink] === Infinity) {
+    return [];
   }
 
   const out: number[] = [];
