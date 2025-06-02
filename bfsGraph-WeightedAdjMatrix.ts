@@ -51,5 +51,14 @@ export default function bfs(
   return [source].concat(out.reverse());
 }
 
-const result = bfs(matrix2, 0, 6);
+let result = bfs(matrix2, 0, 6);
+console.log(result);
+
+result = bfs(matrix2, 0, 2);
+console.log(result);
+
+result = bfs(matrix2, 4, 3);
+console.log(result);
+
+result = bfs(matrix2, 2, 0);
 console.log(result);
