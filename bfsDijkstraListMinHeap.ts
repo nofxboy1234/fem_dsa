@@ -68,6 +68,7 @@ class MinHeap {
         this.heap[smallest]!,
         this.heap[index]!,
       ];
+      this.heapifyDown(smallest);
     }
   }
 }
