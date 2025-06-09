@@ -3,72 +3,12 @@ interface Point {
   y: number;
 }
 
-const dir = [
-  [0, -1],
-  [1, 0],
-  [0, 1],
-  [-1, 0],
-];
-
-function walk(
-  maze: string[],
-  wall: string,
-  curr: Point,
-  end: Point,
-  seen: boolean[][],
-  path: Point[]
-): boolean {
-  // -- base case
-  // off the map
-  if (curr.y < 0 || curr.y >= maze.length) {
-    return false;
-  }
-
-  // on a wall
-  if (maze[curr.y][curr.x] === wall) {
-    return false;
-  }
-
-  // at end
-  if (curr.x === end.x && curr.y === end.y) {
-    path.push(end);
-    return true;
-  }
-
-  // already seen tile
-  if (seen[curr.y][curr.x]) {
-    return false;
-  }
-
-  // -- recurse
-  // pre
-  seen[curr.y][curr.x] = true;
-  path.push(curr);
-  // recurse
-  for (let i = 0; i < dir.length; ++i) {
-    const [x, y] = dir[i];
-    if (
-      walk(
-        maze,
-        wall,
-        {
-          x: curr.x + x,
-          y: curr.y + y,
-        },
-        end,
-        seen,
-        path
-      )
-    ) {
-      return true;
-    }
-  }
-
-  // post
-  path.pop();
-
-  return false;
-}
+const DIRECTIONS = [
+  [0, -1], // up
+  [1, 0], // right
+  [0, 1], // down
+  [-1, 0], // left
+] as const;
 
 export default function solve(
   maze: string[],
@@ -76,22 +16,56 @@ export default function solve(
   start: Point,
   end: Point
 ): Point[] {
-  const seen: boolean[][] = [];
-  const path: Point[] = [];
+  const rows = maze.length;
+  const cols = maze[0]?.length ?? 0;
+  const seen = Array.from({ length: rows }, () => Array(cols).fill(false));
 
-  for (let i = 0; i < maze.length; ++i) {
-    seen.push(new Array(maze[i].length).fill(false));
+  function isValid(p: Point): boolean {
+    return (
+      p.y >= 0 &&
+      p.y < rows &&
+      p.x >= 0 &&
+      p.x < cols &&
+      maze[p.y]![p.x] !== wall &&
+      !seen[p.y]![p.x]
+    );
   }
 
-  walk(maze, wall, start, end, seen, path);
+  function dfs(curr: Point, path: Point[]): boolean {
+    // Found the end
+    if (curr.x === end.x && curr.y === end.y) {
+      path.push(curr);
+      return true;
+    }
 
+    // Mark as visited and add to path
+    seen[curr.y]![curr.x] = true;
+    path.push(curr);
+
+    // Try all directions
+    for (const [dx, dy] of DIRECTIONS) {
+      const next = { x: curr.x + dx, y: curr.y + dy };
+
+      if (isValid(next) && dfs(next, path)) {
+        return true;
+      }
+    }
+
+    // Backtrack
+    path.pop();
+    return false;
+  }
+
+  const path: Point[] = [];
+
+  // Early validation
+  if (!isValid(start)) return path;
+
+  dfs(start, path);
   return path;
 }
 
-// x: 0 - 11
-// y: 0 - 5
-
-// there is only one path through
+// Test
 const maze = [
   "xxxxxxxxxx x",
   "x        x x",
