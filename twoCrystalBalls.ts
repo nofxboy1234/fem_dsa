@@ -43,13 +43,10 @@ export default function twoCrystalBalls(breaks: boolean[]): number {
     }
   }
 
+  // Place ball 2
   ballPosition -= jumpSize;
 
-  for (
-    let j = 0;
-    j <= jumpSize && ballPosition < breaks.length;
-    ++j, ++ballPosition
-  ) {
+  for (; ballPosition < breaks.length; ballPosition++) {
     if (breaks[ballPosition]) {
       return ballPosition;
     }
