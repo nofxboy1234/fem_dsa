@@ -1,42 +1,34 @@
-function qs(arr: number[], lo: number, hi: number): void {
-  if (lo >= hi) {
-    return;
-  }
+function quickSort(arr: number[], start = 0, end = arr.length - 1): void {
+  if (start >= end) return;
 
-  const pivotIdx = partition(arr, lo, hi);
+  const pivotIndex = partition(arr, start, end);
 
-  console.log(`partition at ${pivotIdx}, sort left ${lo} - ${pivotIdx - 1}`);
-  qs(arr, lo, pivotIdx - 1);
-  console.log(`partition at ${pivotIdx}, sort right ${pivotIdx + 1} - ${hi}`);
-  qs(arr, pivotIdx + 1, hi);
+  quickSort(arr, start, pivotIndex - 1);
+  quickSort(arr, pivotIndex + 1, end);
 }
 
-function partition(arr: number[], lo: number, hi: number): number {
-  const pivot = arr[hi];
+function partition(arr: number[], start: number, end: number): number {
+  const pivot = arr[end]!;
+  let partitionIndex = start;
 
-  let idx = lo - 1;
-
-  for (let i = lo; i < hi; ++i) {
-    if (arr[i] <= pivot) {
-      idx++;
-      const tmp = arr[i];
-      arr[i] = arr[idx];
-      arr[idx] = tmp;
+  for (let i = start; i < end; i++) {
+    if (arr[i]! <= pivot) {
+      swap(arr, i, partitionIndex);
+      partitionIndex++;
     }
   }
 
-  idx++;
-  arr[hi] = arr[idx];
-  arr[idx] = pivot;
-
-  return idx;
+  swap(arr, partitionIndex, end);
+  return partitionIndex;
 }
 
-export default function quickSort(arr: number[]): void {
-  qs(arr, 0, arr.length - 1);
+function swap(arr: number[], i: number, j: number): void {
+  [arr[i], arr[j]] = [arr[j]!, arr[i]!];
 }
 
-const arr = [9, 3, 7, 4, 69, 420, 42];
-quickSort(arr);
+// Usage example
+const numbers = [9, 3, 7, 4, 69, 420, 42];
+quickSort(numbers);
+console.log(numbers); // [3, 4, 7, 9, 42, 69, 420]
 
-console.log(arr);
+export { quickSort };
