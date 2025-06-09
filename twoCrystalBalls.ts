@@ -34,25 +34,58 @@
 // rather than average cases, which is crucial in algorithm design and system reliability.
 
 export default function twoCrystalBalls(breaks: boolean[]): number {
-  const jmpAmount = Math.floor(Math.sqrt(breaks.length));
+  const jumpSize = Math.floor(Math.sqrt(breaks.length));
 
-  let i = jmpAmount;
-  for (; i < breaks.length; i += jmpAmount) {
-    if (breaks[i]) {
+  let ballPosition = jumpSize;
+  for (; ballPosition < breaks.length; ballPosition += jumpSize) {
+    if (breaks[ballPosition]) {
       break;
     }
   }
 
-  i -= jmpAmount;
+  ballPosition -= jumpSize;
 
-  for (let j = 0; j <= jmpAmount && i < breaks.length; ++j, ++i) {
-    if (breaks[i]) {
-      return i;
+  for (
+    let j = 0;
+    j <= jumpSize && ballPosition < breaks.length;
+    ++j, ++ballPosition
+  ) {
+    if (breaks[ballPosition]) {
+      return ballPosition;
     }
   }
 
   return -1;
 }
 
-let result = twoCrystalBalls([false, false, false, false, true, true, true]);
-console.log(result);
+function testCrystalBalls() {
+  // Test case 1: Breaking point at index 14
+  const floors1 = new Array(20).fill(false);
+  for (let i = 14; i < 20; i++) {
+    floors1[i] = true;
+  }
+
+  console.log("Test 1 - Breaking floor:", twoCrystalBalls(floors1)); // Should return 14
+
+  // Test case 2: Breaking point at index 7
+  const floors2 = new Array(15).fill(false);
+  for (let i = 7; i < 15; i++) {
+    floors2[i] = true;
+  }
+
+  console.log("Test 2 - Breaking floor:", twoCrystalBalls(floors2)); // Should return 7
+
+  // Test case 3: No breaking point
+  const floors3 = new Array(10).fill(false);
+  console.log("Test 3 - Breaking floor:", twoCrystalBalls(floors3)); // Should return -1
+
+  // Test case 4: Your failing test case
+  const floors4 = new Array(7).fill(false);
+  for (let i = 4; i < 7; i++) {
+    floors4[i] = true;
+  }
+  console.log("Test 4 - Breaking floor:", twoCrystalBalls(floors4)); // Should return 4
+}
+
+// Run tests
+testCrystalBalls();
