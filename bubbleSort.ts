@@ -9,7 +9,7 @@ export default function bubbleSort(arr) {
 
     // Inner loop for comparisons in current pass
     // Reduce range each pass since largest elements bubble to the end
-    for (let j = 0; j < n - i - 1; j++) {
+    for (let j = 0; j < n - 1 - i; j++) {
       if (sorted[j] > sorted[j + 1]) {
         // Swap elements using destructuring assignment
         [sorted[j], sorted[j + 1]] = [sorted[j + 1], sorted[j]];
