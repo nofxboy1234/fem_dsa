@@ -33,22 +33,28 @@
 // This problem teaches you to think about optimizing for worst-case scenarios
 // rather than average cases, which is crucial in algorithm design and system reliability.
 
-export default function twoCrystalBalls(breaks: boolean[]): number {
-  const jumpSize = Math.floor(Math.sqrt(breaks.length));
+export default function twoCrystalBalls(breaks) {
+  const n = breaks.length;
+  const jumpSize = Math.floor(Math.sqrt(n));
 
-  let ballPosition = jumpSize;
-  for (; ballPosition < breaks.length; ballPosition += jumpSize) {
-    if (breaks[ballPosition]) {
+  // Phase 1: Use first ball with √N jumps
+  let firstBallPosition = jumpSize;
+  while (firstBallPosition < n) {
+    if (breaks[firstBallPosition]) {
       break;
     }
+    firstBallPosition += jumpSize;
   }
 
-  // Place ball 2
-  ballPosition -= jumpSize;
+  // Phase 2: Use second ball for linear search
+  // Go back to the last safe position
+  let searchStart = firstBallPosition - jumpSize;
+  let searchEnd = firstBallPosition < n ? firstBallPosition + 1 : n; // Include the breaking position!
 
-  for (; ballPosition < breaks.length; ballPosition++) {
-    if (breaks[ballPosition]) {
-      return ballPosition;
+  // Linear search from last safe position
+  for (let i = searchStart; i < searchEnd; i++) {
+    if (i >= 0 && breaks[i]) {
+      return i;
     }
   }
 
@@ -76,12 +82,19 @@ function testCrystalBalls() {
   const floors3 = new Array(10).fill(false);
   console.log("Test 3 - Breaking floor:", twoCrystalBalls(floors3)); // Should return -1
 
-  // Test case 4: Your failing test case
+  // Test case 4: Your failing test case: breaking point at index 4
   const floors4 = new Array(7).fill(false);
   for (let i = 4; i < 7; i++) {
     floors4[i] = true;
   }
   console.log("Test 4 - Breaking floor:", twoCrystalBalls(floors4)); // Should return 4
+
+  // Test case 5: Breaking point at index 7
+  const floors5 = new Array(7).fill(false);
+  for (let i = 6; i < 7; i++) {
+    floors5[i] = true;
+  }
+  console.log("Test 4 - Breaking floor:", twoCrystalBalls(floors5)); // Should return 6
 }
 
 // Run tests
