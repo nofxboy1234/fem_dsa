@@ -5,7 +5,7 @@ function mergeSort<T>(arr: T[]): T[] {
   }
 
   // Divide: split array into two halves
-  const mid = Math.floor(arr.length / 2);
+  const mid = Math.ceil(arr.length / 2);
   const left = arr.slice(0, mid);
   const right = arr.slice(mid);
 
