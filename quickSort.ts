@@ -8,18 +8,18 @@ function quickSort(arr: number[], start = 0, end = arr.length - 1): void {
 }
 
 function partition(arr: number[], start: number, end: number): number {
-  const pivot = arr[end]!;
-  let partitionIndex = start;
+  let pivotIndex = start;
+  let storeIndex = pivotIndex + 1;
 
-  for (let i = start; i < end; i++) {
-    if (arr[i]! <= pivot) {
-      swap(arr, partitionIndex, i);
-      partitionIndex++;
+  for (let i = pivotIndex + 1; i <= end; i++) {
+    if (arr[i]! <= arr[pivotIndex]!) {
+      swap(arr, i, storeIndex);
+      storeIndex++;
     }
   }
 
-  swap(arr, partitionIndex, end);
-  return partitionIndex;
+  swap(arr, pivotIndex, storeIndex - 1);
+  return storeIndex - 1;
 }
 
 function swap(arr: number[], i: number, j: number): void {
