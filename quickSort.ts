@@ -39,4 +39,12 @@ const numbers3 = [9, 27, 17, 29, 8, 37, 2, 6, 45, 7];
 quickSort(numbers3);
 console.log(numbers3);
 
+const numbers4 = [4, 10, 24, 27, 30, 39, 47];
+quickSort(numbers4);
+console.log(numbers4);
+
+const numbers5 = [1, 2, 3, 1, 4, 2, 2];
+quickSort(numbers5);
+console.log(numbers5);
+
 export { quickSort };
