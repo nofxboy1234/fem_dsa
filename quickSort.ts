@@ -13,7 +13,7 @@ function partition(arr: number[], start: number, end: number): number {
 
   for (let i = start; i < end; i++) {
     if (arr[i]! <= pivot) {
-      swap(arr, i, partitionIndex);
+      swap(arr, partitionIndex, i);
       partitionIndex++;
     }
   }
