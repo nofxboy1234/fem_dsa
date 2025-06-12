@@ -117,6 +117,36 @@ class BinarySearchTree<T> {
     }
   }
 
+  // Pre-order traversal (Root -> Left -> Right)
+  preorderTraversal(): T[] {
+    const result: T[] = [];
+    this.preorder(this.root, result);
+    return result;
+  }
+
+  private preorder(node: TreeNode<T> | null, result: T[]): void {
+    if (node !== null) {
+      result.push(node.value); // Visit root first
+      this.preorder(node.left, result); // Then left subtree
+      this.preorder(node.right, result); // Then right subtree
+    }
+  }
+
+  // Post-order traversal (Left -> Right -> Root)
+  postorderTraversal(): T[] {
+    const result: T[] = [];
+    this.postorder(this.root, result);
+    return result;
+  }
+
+  private postorder(node: TreeNode<T> | null, result: T[]): void {
+    if (node !== null) {
+      this.postorder(node.left, result); // Visit left subtree first
+      this.postorder(node.right, result); // Then right subtree
+      result.push(node.value); // Finally root
+    }
+  }
+
   getHeight(): number {
     return this.calculateHeight(this.root);
   }
@@ -183,6 +213,8 @@ console.log("Original array:", unorderedArray);
 console.log("\n1. Simple Construction (insert order matters):");
 const bst1 = BinarySearchTree.fromArraySimple(unorderedArray);
 console.log("Inorder traversal:", bst1.inorderTraversal());
+console.log("Preorder traversal:", bst1.preorderTraversal());
+console.log("Postorder traversal:", bst1.postorderTraversal());
 console.log("Tree height:", bst1.getHeight());
 console.log("Tree structure:");
 console.log(bst1.visualize());
@@ -191,6 +223,8 @@ console.log(bst1.visualize());
 console.log("\n2. Balanced Construction:");
 const bst2 = BinarySearchTree.fromArrayBalanced(unorderedArray);
 console.log("Inorder traversal:", bst2.inorderTraversal());
+console.log("Preorder traversal:", bst2.preorderTraversal());
+console.log("Postorder traversal:", bst2.postorderTraversal());
 console.log("Tree height:", bst2.getHeight());
 console.log("Tree structure:");
 console.log(bst2.visualize());
@@ -201,7 +235,9 @@ const stringArray = ["banana", "apple", "cherry", "date", "elderberry"];
 console.log("Original array:", stringArray);
 
 const stringBST = BinarySearchTree.fromArrayBalanced(stringArray);
-console.log("Balanced BST traversal:", stringBST.inorderTraversal());
+console.log("Inorder traversal:", stringBST.inorderTraversal());
+console.log("Preorder traversal:", stringBST.preorderTraversal());
+console.log("Postorder traversal:", stringBST.postorderTraversal());
 
 // Test with duplicates
 console.log("\n=== Array with Duplicates ===");
@@ -213,9 +249,29 @@ const bstNoDuplicates = BinarySearchTree.fromArrayCustom(arrayWithDuplicates, {
   balanced: true,
 });
 console.log(
-  "BST (no duplicates, balanced):",
+  "Inorder (no duplicates, balanced):",
   bstNoDuplicates.inorderTraversal()
 );
+console.log(
+  "Preorder (no duplicates, balanced):",
+  bstNoDuplicates.preorderTraversal()
+);
+console.log(
+  "Postorder (no duplicates, balanced):",
+  bstNoDuplicates.postorderTraversal()
+);
+
+// Traversal comparison example
+console.log("\n=== Traversal Comparison Example ===");
+const comparisonArray = [50, 30, 70, 20, 40, 60, 80];
+console.log("Array:", comparisonArray);
+
+const comparisonBST = BinarySearchTree.fromArraySimple(comparisonArray);
+console.log("Tree structure:");
+console.log(comparisonBST.visualize());
+console.log("Inorder (L-Root-R):", comparisonBST.inorderTraversal());
+console.log("Preorder (Root-L-R):", comparisonBST.preorderTraversal());
+console.log("Postorder (L-R-Root):", comparisonBST.postorderTraversal());
 
 // Performance comparison for larger arrays
 console.log("\n=== Performance Comparison ===");
