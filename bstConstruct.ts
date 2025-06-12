@@ -160,6 +160,72 @@ class BinarySearchTree<T> {
     return Math.max(leftHeight, rightHeight) + 1;
   }
 
+  // Get the depth of a specific value in the tree
+  getDepth(value: T): number {
+    return this.calculateDepth(this.root, value, 0);
+  }
+
+  private calculateDepth(
+    node: TreeNode<T> | null,
+    value: T,
+    currentDepth: number
+  ): number {
+    if (node === null) return -1; // Value not found
+
+    if (node.value === value) {
+      return currentDepth;
+    }
+
+    if (value < node.value) {
+      return this.calculateDepth(node.left, value, currentDepth + 1);
+    } else {
+      return this.calculateDepth(node.right, value, currentDepth + 1);
+    }
+  }
+
+  // Get all nodes at a specific depth level
+  getNodesAtDepth(depth: number): T[] {
+    const result: T[] = [];
+    this.collectNodesAtDepth(this.root, depth, 0, result);
+    return result;
+  }
+
+  private collectNodesAtDepth(
+    node: TreeNode<T> | null,
+    targetDepth: number,
+    currentDepth: number,
+    result: T[]
+  ): void {
+    if (node === null) return;
+
+    if (currentDepth === targetDepth) {
+      result.push(node.value);
+      return;
+    }
+
+    this.collectNodesAtDepth(node.left, targetDepth, currentDepth + 1, result);
+    this.collectNodesAtDepth(node.right, targetDepth, currentDepth + 1, result);
+  }
+
+  // Get depth information for all nodes
+  getDepthMap(): Map<T, number> {
+    const depthMap = new Map<T, number>();
+    this.buildDepthMap(this.root, 0, depthMap);
+    return depthMap;
+  }
+
+  private buildDepthMap(
+    node: TreeNode<T> | null,
+    depth: number,
+    depthMap: Map<T, number>
+  ): void {
+    if (node !== null) {
+      depthMap.set(node.value, depth);
+      this.buildDepthMap(node.left, depth + 1, depthMap);
+      this.buildDepthMap(node.right, depth + 1, depthMap);
+    }
+  }
+
   // Visualize tree structure (for small trees)
   visualize(): string {
     if (this.root === null) return "Empty tree";
@@ -272,6 +338,40 @@ console.log(comparisonBST.visualize());
 console.log("Inorder (L-Root-R):", comparisonBST.inorderTraversal());
 console.log("Preorder (Root-L-R):", comparisonBST.preorderTraversal());
 console.log("Postorder (L-R-Root):", comparisonBST.postorderTraversal());
+
+// Depth analysis
+console.log("\n=== Depth Analysis ===");
+console.log("Tree height:", comparisonBST.getHeight());
+console.log("Depth of 50:", comparisonBST.getDepth(50)); // Root
+console.log("Depth of 30:", comparisonBST.getDepth(30)); // Level 1
+console.log("Depth of 20:", comparisonBST.getDepth(20)); // Level 2
+console.log("Depth of 99:", comparisonBST.getDepth(99)); // Not found
+
+console.log("Nodes at depth 0:", comparisonBST.getNodesAtDepth(0)); // Root level
+console.log("Nodes at depth 1:", comparisonBST.getNodesAtDepth(1)); // Second level
+console.log("Nodes at depth 2:", comparisonBST.getNodesAtDepth(2)); // Third level
+console.log("Nodes at depth 3:", comparisonBST.getNodesAtDepth(3)); // Empty level
+
+const depthMap = comparisonBST.getDepthMap();
+console.log("Complete depth mapping:");
+for (const [value, depth] of depthMap) {
+  console.log(`  Value ${value} is at depth ${depth}`);
+}
+
+// Compare depth distributions between simple and balanced trees
+console.log("\n=== Depth Distribution Comparison ===");
+const testArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+const simpleBST = BinarySearchTree.fromArraySimple(testArray);
+const balancedBST = BinarySearchTree.fromArrayBalanced(testArray);
+
+console.log("Simple BST (sequential insertion):");
+console.log("  Height:", simpleBST.getHeight());
+console.log("  Depth map:", Array.from(simpleBST.getDepthMap().entries()));
+
+console.log("Balanced BST:");
+console.log("  Height:", balancedBST.getHeight());
+console.log("  Depth map:", Array.from(balancedBST.getDepthMap().entries()));
 
 // Performance comparison for larger arrays
 console.log("\n=== Performance Comparison ===");
