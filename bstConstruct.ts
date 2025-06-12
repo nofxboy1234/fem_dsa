@@ -27,13 +27,16 @@ class BinarySearchTree<T> {
   // Method 2: Balanced construction - sort first, then build balanced tree
   // Time: O(n log n) - due to sorting
   // Space: O(n)
-  static fromArrayBalanced<T>(arr: T[]): BinarySearchTree<T> {
+  static fromArrayBalanced<T>(
+    arr: T[],
+    compareFn?: (a: T, b: T) => number
+  ): BinarySearchTree<T> {
     const bst = new BinarySearchTree<T>();
 
     if (arr.length === 0) return bst;
 
     // Remove duplicates and sort
-    const uniqueSorted = [...new Set(arr)].sort();
+    const uniqueSorted = [...new Set(arr)].sort(compareFn);
 
     bst.root = bst.buildBalancedTree(uniqueSorted, 0, uniqueSorted.length - 1);
     return bst;
@@ -47,7 +50,7 @@ class BinarySearchTree<T> {
     if (start > end) return null;
 
     const mid = Math.floor((start + end) / 2);
-    const node = new TreeNode(sortedArr[mid]);
+    const node = new TreeNode<T>(sortedArr[mid]!);
 
     node.left = this.buildBalancedTree(sortedArr, start, mid - 1);
     node.right = this.buildBalancedTree(sortedArr, mid + 1, end);
@@ -61,12 +64,13 @@ class BinarySearchTree<T> {
     options: {
       allowDuplicates?: boolean;
       balanced?: boolean;
-    } = {}
+    } = {},
+    compareFn?: (a: T, b: T) => number
   ): BinarySearchTree<T> {
     const { allowDuplicates = false, balanced = false } = options;
 
     if (balanced) {
-      return BinarySearchTree.fromArrayBalanced(arr);
+      return BinarySearchTree.fromArrayBalanced(arr, compareFn);
     }
 
     const bst = new BinarySearchTree<T>();
@@ -524,7 +528,10 @@ console.log(bst1.visualize());
 
 // Method 2: Balanced construction
 console.log("\n2. Balanced Construction:");
-const bst2 = BinarySearchTree.fromArrayBalanced(unorderedArray);
+const bst2 = BinarySearchTree.fromArrayBalanced(
+  unorderedArray,
+  (a, b) => a - b
+);
 console.log("Inorder traversal:", bst2.inorderTraversal());
 console.log("Preorder traversal:", bst2.preorderTraversal());
 console.log("Postorder traversal:", bst2.postorderTraversal());
@@ -550,10 +557,14 @@ console.log("\n=== Array with Duplicates ===");
 const arrayWithDuplicates = [5, 3, 7, 3, 8, 5, 1, 9, 1];
 console.log("Original array:", arrayWithDuplicates);
 
-const bstNoDuplicates = BinarySearchTree.fromArrayCustom(arrayWithDuplicates, {
-  allowDuplicates: false,
-  balanced: true,
-});
+const bstNoDuplicates = BinarySearchTree.fromArrayCustom(
+  arrayWithDuplicates,
+  {
+    allowDuplicates: false,
+    balanced: true,
+  },
+  (a, b) => a - b
+);
 console.log(
   "Inorder (no duplicates, balanced):",
   bstNoDuplicates.inorderTraversal()
@@ -615,7 +626,10 @@ console.log("\n=== Depth Distribution Comparison ===");
 const testArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 const simpleBST = BinarySearchTree.fromArraySimple(testArray);
-const balancedBST = BinarySearchTree.fromArrayBalanced(testArray);
+const balancedBST = BinarySearchTree.fromArrayBalanced(
+  testArray,
+  (a, b) => a - b
+);
 
 console.log("Simple BST (sequential insertion):");
 console.log("  Height:", simpleBST.getHeight());
@@ -639,7 +653,10 @@ console.timeEnd("Simple construction");
 console.log("Simple BST height:", largeBST1.getHeight());
 
 console.time("Balanced construction");
-const largeBST2 = BinarySearchTree.fromArrayBalanced(largeArray);
+const largeBST2 = BinarySearchTree.fromArrayBalanced(
+  largeArray,
+  (a, b) => a - b
+);
 console.timeEnd("Balanced construction");
 console.log("Balanced BST height:", largeBST2.getHeight());
 
@@ -739,7 +756,7 @@ console.log("After deletion - is empty:", singleNodeTree.isEmpty()); // true
 // Performance comparison of find methods
 console.log("\n=== Find Method Performance Comparison ===");
 const perfArray = Array.from({ length: 100 }, (_, i) => i + 1);
-const perfTree = BinarySearchTree.fromArrayBalanced(perfArray);
+const perfTree = BinarySearchTree.fromArrayBalanced(perfArray, (a, b) => a - b);
 
 const searchValue = 75;
 console.log(`Searching for ${searchValue} in balanced tree with 100 nodes:`);
