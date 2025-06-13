@@ -1,6 +1,5 @@
 type GraphEdge = { to: number; weight: number };
 type WeightedAdjacencyList = GraphEdge[][];
-import { list2 } from "./graph";
 
 function walk(
   graph: WeightedAdjacencyList,
@@ -9,50 +8,105 @@ function walk(
   seen: boolean[],
   path: number[]
 ): boolean {
-  if (seen[curr]) {
-    return false;
-  }
-
+  // Mark current node as visited before any other operations
   seen[curr] = true;
 
-  // recurse
-  // pre
+  // Pre-order: add current node to path
   path.push(curr);
+
+  // Check if we found the target
   if (curr === needle) {
     return true;
   }
 
-  // recurse
-  const list = graph[curr]!;
-  for (let i = 0; i < list.length; ++i) {
-    const edge = list[i]!;
-
-    if (walk(graph, edge.to, needle, seen, path)) {
-      return true;
+  // Explore all adjacent nodes
+  const adjacentNodes = graph[curr];
+  if (adjacentNodes) {
+    // Add null check for safety
+    for (const edge of adjacentNodes) {
+      // Only visit unvisited nodes
+      if (!seen[edge.to] && walk(graph, edge.to, needle, seen, path)) {
+        return true;
+      }
     }
   }
-  // post
+
+  // Post-order: backtrack by removing current node from path
   path.pop();
 
   return false;
 }
 
-export default function dfs(
+export function dfs(
   graph: WeightedAdjacencyList,
   source: number,
   needle: number
 ): number[] | null {
-  const seen: boolean[] = new Array(graph.length).fill(false);
-  const path: number[] = [];
-
-  walk(graph, source, needle, seen, path);
-
-  if (path.length === 0) {
+  // Input validation
+  if (
+    source < 0 ||
+    source >= graph.length ||
+    needle < 0 ||
+    needle >= graph.length
+  ) {
     return null;
   }
 
-  return path;
+  const seen: boolean[] = new Array(graph.length).fill(false);
+  const path: number[] = [];
+
+  const found = walk(graph, source, needle, seen, path);
+
+  return found ? path : null;
 }
+
+// Alternative iterative implementation for comparison
+export function dfsIterative(
+  graph: WeightedAdjacencyList,
+  source: number,
+  needle: number
+): number[] | null {
+  if (
+    source < 0 ||
+    source >= graph.length ||
+    needle < 0 ||
+    needle >= graph.length
+  ) {
+    return null;
+  }
+
+  const seen: boolean[] = new Array(graph.length).fill(false);
+  const stack: { node: number; path: number[] }[] = [
+    { node: source, path: [source] },
+  ];
+
+  while (stack.length > 0) {
+    const { node, path } = stack.pop()!;
+
+    if (seen[node]) continue;
+    seen[node] = true;
+
+    if (node === needle) {
+      return path;
+    }
+
+    const adjacentNodes = graph[node];
+    if (adjacentNodes) {
+      // Add neighbors to stack in reverse order to maintain left-to-right traversal
+      for (let i = adjacentNodes.length - 1; i >= 0; i--) {
+        const edge = adjacentNodes[i]!;
+        if (!seen[edge.to]) {
+          stack.push({ node: edge.to, path: [...path, edge.to] });
+        }
+      }
+    }
+  }
+
+  return null;
+}
+
+// Example usage (assuming list2 is imported)
+import { list2 } from "./graph";
 
 let result = dfs(list2, 0, 6);
 console.log(result);
