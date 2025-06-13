@@ -25,22 +25,22 @@ export default function bfs(
   const prev = new Array(graph.length).fill(-1);
 
   seen[source] = true;
-  const q: number[] = [source];
+  const queue: number[] = [source];
 
-  while (q.length > 0) {
-    const curr = q.shift()!; // We know q is not empty due to while condition
+  while (queue.length > 0) {
+    const curr = queue.shift()!; // We know queue is not empty due to while condition
 
     // Check adjacency list for current node
-    const adjs = graph[curr]!;
-    for (let i = 0; i < adjs.length; i++) {
+    const weights = graph[curr]!;
+    for (let i = 0; i < weights.length; i++) {
       // Skip if no edge exists (weight is 0) or already visited
-      if (adjs[i] === 0 || seen[i]) {
+      if (weights[i] === 0 || seen[i]) {
         continue;
       }
 
       seen[i] = true;
       prev[i] = curr;
-      q.push(i);
+      queue.push(i);
 
       // Early termination when target is found
       if (i === needle) {
