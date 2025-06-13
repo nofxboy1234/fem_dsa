@@ -511,6 +511,16 @@ class BinarySearchTree<T> {
 // Example usage and comparisons
 console.log("=== BST Construction from Unordered Array ===\n");
 
+const testDeleteArray = [20, 30, 40];
+const bstDeleteArray1 = BinarySearchTree.fromArrayBalanced(
+  testDeleteArray,
+  (a, b) => a - b
+);
+bstDeleteArray1.insert(35);
+bstDeleteArray1.insert(36);
+// bstDeleteArray1.delete(20);
+bstDeleteArray1.delete(30);
+
 const unorderedArray = [15, 10, 20, 8, 12, 16, 25, 6, 11, 13, 27];
 console.log("Original array:", unorderedArray);
 
