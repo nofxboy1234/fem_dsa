@@ -540,7 +540,9 @@ console.log("Breadth-first by level:", bst2.breadthFirstTraversalByLevel());
 console.log("Tree height:", bst2.getHeight());
 console.log("Tree structure:");
 console.log(bst2.visualize());
-bst2.delete(8);
+// bst2.delete(8);
+// bst2.delete(6);
+bst2.delete(10);
 
 // Test with different data types
 console.log("\n=== String Array Example ===");
