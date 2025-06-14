@@ -75,12 +75,12 @@ class MinHeap {
 
 export default function dijkstraListMinHeap(
   source: number,
-  sink: number,
-  arr: WeightedAdjacencyList
+  target: number,
+  graph: WeightedAdjacencyList
 ): number[] {
-  const seen = new Array(arr.length).fill(false);
-  const prev = new Array(arr.length).fill(-1);
-  const dists = new Array(arr.length).fill(Infinity);
+  const seen = new Array(graph.length).fill(false);
+  const prev = new Array(graph.length).fill(-1);
+  const dists = new Array(graph.length).fill(Infinity);
 
   dists[source] = 0;
   const heap = new MinHeap();
@@ -88,34 +88,34 @@ export default function dijkstraListMinHeap(
 
   while (!heap.isEmpty()) {
     const current = heap.pop();
-    const curr = current!.node;
+    const node = current!.node;
 
-    if (seen[curr]) continue;
+    if (seen[node]) continue;
 
-    seen[curr] = true;
+    seen[node] = true;
 
-    if (curr === sink) break;
+    if (node === target) break;
 
-    const adjs = arr[curr]! || [];
+    const adjs = graph[node]! || [];
     for (const edge of adjs) {
       if (seen[edge.to]) continue;
 
-      const newDist = dists[curr] + edge.weight;
+      const newDist = dists[node] + edge.weight;
 
       if (newDist < dists[edge.to]) {
         dists[edge.to] = newDist;
-        prev[edge.to] = curr;
+        prev[edge.to] = node;
         heap.push(edge.to, newDist);
       }
     }
   }
 
-  if (dists[sink] === Infinity) {
+  if (dists[target] === Infinity) {
     return [];
   }
 
   const path: number[] = [];
-  let curr = sink;
+  let curr = target;
 
   while (prev[curr] !== -1) {
     path.push(curr);
@@ -127,4 +127,7 @@ export default function dijkstraListMinHeap(
 }
 
 let result = dijkstraListMinHeap(0, 6, list1);
+console.log(result);
+
+result = dijkstraListMinHeap(0, 3, list1);
 console.log(result);
